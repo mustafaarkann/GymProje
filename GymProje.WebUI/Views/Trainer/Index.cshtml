@@ -1,0 +1,111 @@
+﻿@model IEnumerable<GymProje.Entity.Entities.Trainer>
+
+@{
+    ViewData["Title"] = "Eğitmen Bul";
+}
+
+<div class="container mt-5">
+
+    <div class="text-center mb-5">
+        <h6 class="text-primary fw-bold text-uppercase ls-2">KADROMUZ</h6>
+        <h2 class="fw-bold display-5">Size En Uygun Eğitmeni Bulun</h2>
+        <p class="text-muted col-md-8 mx-auto">
+            Hedeflerinize ulaşmak için uzmanlık alanına veya isme göre arama yapabilirsiniz.
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-5 bg-light">
+        <div class="card-body p-4">
+            <form asp-action="Index" method="get">
+                <div class="row align-items-end">
+
+                    <div class="col-md-5 mb-3 mb-md-0">
+                        <label class="form-label fw-bold text-muted small text-uppercase">Uzmanlık Alanı</label>
+                        <select name="specialty" class="form-select form-select-lg shadow-sm" asp-items="ViewBag.Specialties">
+                            <option value="">-- Tümü --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-5 mb-3 mb-md-0">
+                        <label class="form-label fw-bold text-muted small text-uppercase">Eğitmen Seçiniz</label>
+                        <select name="trainerId" class="form-select form-select-lg shadow-sm" asp-items="ViewBag.Trainers">
+                            <option value="">-- Tümü --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg shadow fw-bold">
+                                <i class="fas fa-search me-2"></i> Ara
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-end mt-2">
+                    <a href="/Trainer/Index" class="text-decoration-none small text-muted">
+                        <i class="fas fa-sync-alt me-1"></i> Filtreleri Temizle
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm hover-card">
+                    <div class="position-relative" style="height: 300px; overflow: hidden;">
+                        @if (!string.IsNullOrEmpty(item.ImageUrl) && item.ImageUrl != "no-image.png")
+                        {
+                            <img src="/img/trainers/@item.ImageUrl" class="card-img-top h-100 w-100" style="object-fit: cover;" alt="@item.FullName">
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/400x500?text=Antrenor" class="card-img-top h-100 w-100" style="object-fit: cover;">
+                        }
+
+                        <span class="position-absolute top-0 end-0 bg-warning text-dark px-3 py-2 fw-bold small m-3 rounded-pill shadow">
+                            <i class="fas fa-map-marker-alt me-1"></i> @item.Gym?.Name
+                        </span>
+                    </div>
+
+                    <div class="card-body text-center p-4">
+                        <h5 class="card-title fw-bold mb-1">@item.FullName</h5>
+                        <span class="badge bg-primary bg-opacity-10 text-primary mb-3 px-3 py-2 rounded-pill">@item.Specialty</span>
+
+                        <hr class="opacity-10 my-3">
+
+                        <a href="/Appointment/Make?trainerId=@item.Id" class="btn btn-outline-dark w-100 rounded-pill fw-bold">
+                            Randevu Al <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (!Model.Any())
+        {
+            <div class="col-12">
+                <div class="alert alert-warning text-center p-5 rounded-3 shadow-sm">
+                    <i class="fas fa-search-minus fa-3x mb-3"></i>
+                    <h4>Sonuç Bulunamadı</h4>
+                    <p>Aradığınız kriterlere uygun eğitmen bulunmamaktadır. Lütfen filtreleri değiştirin.</p>
+                    <a href="/Trainer/Index" class="btn btn-outline-dark mt-2">Tüm Eğitmenleri Göster</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .hover-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .hover-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+        }
+</style>

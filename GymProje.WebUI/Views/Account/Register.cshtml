@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-success text-white text-center">
+                    <h3 class="font-weight-light my-2">Aramıza Katıl</h3>
+                </div>
+                <div class="card-body">
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle"></i> @ViewBag.Error
+                        </div>
+                    }
+
+                    <form asp-action="Register" method="post">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1">Adınız</label>
+                                <input name="firstName" class="form-control" placeholder="Ad" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1">Soyadınız</label>
+                                <input name="lastName" class="form-control" placeholder="Soyad" required />
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <label class="small mb-1">E-Posta Adresi</label>
+                            <input name="email" type="email" class="form-control" placeholder="name@example.com" required />
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label class="small mb-1">Şifre</label>
+                                <input name="password" type="password" class="form-control" placeholder="Şifreniz" required />
+                                <small class="text-muted">En az 3 karakter (Örn: 123)</small>
+                            </div>
+                        </div>
+
+                        <div class="d-grid mt-4 mb-0">
+                            <button type="submit" class="btn btn-success btn-block">Hesap Oluştur</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small"><a href="/Account/Login">Zaten hesabınız var mı? Giriş Yapın</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

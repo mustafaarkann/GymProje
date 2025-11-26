@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "AI Destekli Program";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-dark text-white text-center py-4">
+                    <h3 class="mb-0"><i class="fas fa-robot me-2"></i>Yapay Zeka Antrenör</h3>
+                    <p class="mb-0 text-white-50">Vücut ölçülerini gir, sana özel programı anında oluşturalım.</p>
+                </div>
+                <div class="card-body p-5">
+
+                    <form asp-action="GeneratePlan" method="post">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Yaş</label>
+                                <input type="number" name="age" class="form-control" required placeholder="Örn: 24" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Cinsiyet</label>
+                                <select name="gender" class="form-select">
+                                    <option value="Erkek">Erkek</option>
+                                    <option value="Kadın">Kadın</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Boy (cm)</label>
+                                <input type="number" name="height" class="form-control" required placeholder="Örn: 180" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Kilo (kg)</label>
+                                <input type="number" name="weight" class="form-control" required placeholder="Örn: 80" />
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Hedefin Nedir?</label>
+                            <select name="goal" class="form-select">
+                                <option value="Kilo Verme">Kilo Vermek & Yağ Yakmak</option>
+                                <option value="Kas Yapma">Kas Kütlesi Artırmak (Hipertrofi)</option>
+                                <option value="Fit Olma">Sağlıklı Yaşam & Form Koruma</option>
+                            </select>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-magic me-2"></i> Programımı Oluştur
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="card-footer text-center">
+                    <a href="/AI/History" class="text-muted small">Geçmiş Raporlarım</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

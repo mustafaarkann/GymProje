@@ -1,8 +1,200 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<GymProje.Entity.Entities.Trainer>
+
+@{
+    ViewData["Title"] = "Ana Sayfa";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    /* HERO SECTION - GİRİŞ ALANI */
+    .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 100px 0;
+        margin-top: -25px; /* Navbar boşluğunu kapatmak için */
+        border-bottom-left-radius: 50px;
+        border-bottom-right-radius: 50px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    /* KART TASARIMI */
+    .trainer-card {
+        border: none;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        background: white;
+        overflow: hidden;
+    }
+
+        .trainer-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+    .trainer-img-wrapper {
+        height: 300px;
+        overflow: hidden;
+        position: relative;
+    }
+
+        .trainer-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+    .trainer-card:hover .trainer-img-wrapper img {
+        transform: scale(1.1);
+    }
+
+    /* ÖZELLİK KUTULARI (ICON BOX) */
+    .feature-box {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        transition: transform 0.3s;
+        height: 100%;
+        border: 1px solid #eee;
+    }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            border-color: #0d6efd;
+            box-shadow: 0 10px 20px rgba(13, 110, 253, 0.1);
+        }
+
+    .icon-wrapper {
+        width: 70px;
+        height: 70px;
+        background: #e7f1ff;
+        color: #0d6efd;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 20px;
+    }
+</style>
+
+<div class="hero-section text-center mb-5">
+    <div class="container">
+        <h1 class="display-3 fw-bold mb-3">Sınırlarını Zorla, Potansiyelini Keşfet</h1>
+        <p class="lead mb-4 mx-auto col-lg-8" style="opacity: 0.9;">
+            Profesyonel antrenörler, yapay zeka destekli programlar ve esnek randevu sistemiyle hedeflerine ulaşmak artık çok daha kolay.
+        </p>
+
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <div class="d-flex justify-content-center gap-3">
+                <a href="/Account/Register" class="btn btn-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow">
+                    <i class="fas fa-rocket me-2"></i> Hemen Başla
+                </a>
+                <a href="/Account/Login" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold">
+                    Giriş Yap
+                </a>
+            </div>
+        }
+        else
+        {
+            <a href="#trainers" class="btn btn-light text-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow">
+                <i class="fas fa-arrow-down me-2"></i> Antrenörleri İncele
+            </a>
+        }
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="row g-4 mb-5 pb-5">
+        <div class="col-md-4">
+            <div class="feature-box">
+                <div class="icon-wrapper">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h4 class="fw-bold">Yapay Zeka Koçluğu</h4>
+                <p class="text-muted">Vücut ölçülerini gir, yapay zeka sana özel beslenme ve antrenman programını saniyeler içinde hazırlasın.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <div class="icon-wrapper">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h4 class="fw-bold">Kolay Randevu</h4>
+                <p class="text-muted">İstediğin antrenörden, sana uygun olan saatte tek tıkla randevunu al. Çakışma derdi yok!</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <div class="icon-wrapper">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <h4 class="fw-bold">Uzman Kadro</h4>
+                <p class="text-muted">Alanında uzman, sertifikalı ve deneyimli antrenörlerle hedeflerine güvenle ulaş.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="trainers" class="text-center mb-5">
+        <h6 class="text-primary fw-bold text-uppercase ls-2">KADROMUZ</h6>
+        <h2 class="fw-bold display-6 mb-4">Eğitmenlerimizle Tanışın</h2>
+        <div class="mx-auto bg-primary mb-5" style="width: 60px; height: 3px;"></div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 trainer-card shadow-sm">
+                    <div class="trainer-img-wrapper">
+                        @if (!string.IsNullOrEmpty(item.ImageUrl) && item.ImageUrl != "no-image.png")
+                        {
+                            <img src="/img/trainers/@item.ImageUrl" alt="@item.FullName">
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/400x500?text=Antrenor" alt="Resim Yok">
+                        }
+
+                        <span class="position-absolute top-0 end-0 bg-primary text-white px-3 py-2 rounded-start mt-3 fw-bold small shadow">
+                            <i class="fas fa-map-marker-alt me-1"></i> @item.Gym?.Name
+                        </span>
+                    </div>
+
+                    <div class="card-body text-center p-4">
+                        <h5 class="card-title fw-bold mb-1">@item.FullName</h5>
+                        <p class="text-primary fw-bold small text-uppercase mb-3">@item.Specialty</p>
+
+                        <hr class="opacity-10 my-3">
+
+                        <p class="card-text text-muted small">
+                            Profesyonel destek almak ve hedeflerine ulaşmak için hemen randevu oluştur.
+                        </p>
+                    </div>
+
+                    <div class="card-footer bg-white border-0 p-4 pt-0">
+                        <a href="/Appointment/Make?trainerId=@item.Id" class="btn btn-outline-primary w-100 rounded-pill py-2 fw-bold">
+                            Randevu Al <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (!Model.Any())
+        {
+            <div class="col-12">
+                <div class="alert alert-warning text-center p-5 rounded-3 shadow-sm">
+                    <i class="fas fa-exclamation-circle fa-2x mb-3"></i>
+                    <h4>Henüz Eğitmen Kaydı Yok</h4>
+                    <p>Sistem yöneticisi henüz eğitmen eklememiş.</p>
+                </div>
+            </div>
+        }
+    </div>
+
 </div>

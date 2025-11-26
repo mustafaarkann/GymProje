@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Randevu Al";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Randevu Oluştur</h4>
+                </div>
+                <div class="card-body p-4">
+
+                    <div class="alert alert-light border text-center mb-4">
+                        <h5 class="mb-1 text-primary">@ViewBag.TrainerName</h5>
+                        <small class="text-muted">@ViewBag.GymName</small>
+                    </div>
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle"></i> @ViewBag.Error
+                        </div>
+                    }
+
+                    <form asp-action="Make" method="post">
+                        <input type="hidden" name="trainerId" value="@ViewBag.TrainerId" />
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Almak İstediğiniz Hizmet</label>
+                            <select name="gymServiceId" class="form-select" asp-items="ViewBag.Services" required>
+                                <option value="">-- Hizmet Seçiniz --</option>
+                            </select>
+                            <div class="form-text">Ücret ve süre parantez içinde belirtilmiştir.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tarih</label>
+                            <input type="date" name="date" class="form-control" required min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Saat</label>
+                            <input type="time" name="time" class="form-control" required />
+                            <div class="form-text">Lütfen salonun çalışma saatleri içinde bir saat seçiniz.</div>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-check-circle me-2"></i> Randevuyu Onayla
+                            </button>
+                            <a href="/" class="btn btn-link text-muted mt-2">İptal</a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+﻿@model IEnumerable<GymProje.Entity.Entities.Appointment>
+
+@{
+    ViewData["Title"] = "Randevularım";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary"><i class="fas fa-calendar-alt me-2"></i>Randevu Geçmişim</h2>
+        <a href="/#trainers" class="btn btn-success rounded-pill shadow-sm">
+            <i class="fas fa-plus me-1"></i> Yeni Randevu Al
+        </a>
+    </div>
+
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">Tarih</th>
+                            <th>Saat</th>
+                            <th>Antrenör</th>
+                            <th>Hizmet</th>
+                            <th>Durum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 fw-bold">@item.AppointmentDate.ToString("dd.MM.yyyy")</td>
+                                <td>@item.StartTime.ToString(@"hh\:mm") - @item.EndTime.ToString(@"hh\:mm")</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px;">
+                                            @item.Trainer?.FullName.Substring(0, 1)
+                                        </div>
+                                        @item.Trainer?.FullName
+                                    </div>
+                                </td>
+                                <td>@item.GymService?.Service?.Name</td>
+                                <td>
+                                    @if (item.Status == GymProje.Entity.Entities.AppointmentStatus.Pending)
+                                    {
+                                        <span class="badge bg-warning text-dark">Onay Bekliyor</span>
+                                    }
+                                    else if (item.Status == GymProje.Entity.Entities.AppointmentStatus.Confirmed)
+                                    {
+                                        <span class="badge bg-success">Onaylandı</span>
+                                    }
+                                    else if (item.Status == GymProje.Entity.Entities.AppointmentStatus.Cancelled)
+                                    {
+                                        <span class="badge bg-danger">İptal Edildi</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Tamamlandı</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-muted">
+                                    <i class="fas fa-calendar-times fa-3x mb-3 text-secondary"></i><br>
+                                    Henüz hiç randevu almadınız.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

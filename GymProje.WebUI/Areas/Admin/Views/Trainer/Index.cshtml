@@ -1,0 +1,57 @@
+﻿@model IEnumerable<GymProje.Entity.Entities.Trainer>
+
+@{
+    ViewData["Title"] = "Antrenör Listesi";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">Antrenör Kadrosu</h6>
+        <a asp-action="Create" class="btn btn-primary btn-sm">
+            <i class="fas fa-plus"></i> Yeni Antrenör Ekle
+        </a>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered align-middle table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Fotoğraf</th>
+                    <th>Ad Soyad</th>
+                    <th>Uzmanlık</th>
+                    <th>Çalıştığı Şube</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="width: 100px;">
+                            @if (!string.IsNullOrEmpty(item.ImageUrl) && item.ImageUrl != "no-image.png")
+                            {
+                                <img src="/img/trainers/@item.ImageUrl" class="rounded-circle" width="60" height="60" style="object-fit:cover;" />
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Resim Yok</span>
+                            }
+                        </td>
+                        <td><strong>@item.FullName</strong></td>
+                        <td>@item.Specialty</td>
+                        <td>
+                            <span class="badge bg-info text-dark">@item.Gym?.Name</span>
+                        </td>
+                        <td>
+                            <a asp-action="Delete" asp-route-id="@item.Id"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Bu antrenörü silmek istediğinize emin misiniz?');">
+                                <i class="fas fa-trash"></i> Sil
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

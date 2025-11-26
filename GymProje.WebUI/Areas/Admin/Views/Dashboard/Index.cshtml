@@ -1,0 +1,193 @@
+﻿@model IEnumerable<GymProje.Entity.Entities.Appointment>
+
+@{
+    ViewData["Title"] = "Yönetim Paneli";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    /* KARTLARA ÖZEL MODERN STİL */
+    .dashboard-card {
+        border: none;
+        border-radius: 15px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .dashboard-card .card-body {
+            position: relative;
+            z-index: 2;
+        }
+
+        .dashboard-card i {
+            position: absolute;
+            right: 15px;
+            bottom: 15px;
+            font-size: 5rem;
+            opacity: 0.2; /* Silik arka plan ikonu */
+            z-index: 1;
+        }
+
+    /* Renk Gradyanları */
+    .bg-gradient-primary {
+        background: linear-gradient(45deg, #4e73df, #224abe);
+    }
+
+    .bg-gradient-success {
+        background: linear-gradient(45deg, #1cc88a, #13855c);
+    }
+
+    .bg-gradient-info {
+        background: linear-gradient(45deg, #36b9cc, #258391);
+    }
+
+    .bg-gradient-warning {
+        background: linear-gradient(45deg, #f6c23e, #dda20a);
+    }
+</style>
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800 fw-bold">Gösterge Paneli</h1>
+    <a href="/" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-globe fa-sm text-white-50 me-1"></i> Siteyi Görüntüle
+    </a>
+</div>
+
+<div class="row">
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card dashboard-card bg-gradient-primary h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs fw-bold text-uppercase mb-1" style="opacity:0.8;">Toplam Salon</div>
+                        <div class="h2 mb-0 fw-bold">@ViewBag.GymCount</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-building"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card dashboard-card bg-gradient-success h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs fw-bold text-uppercase mb-1" style="opacity:0.8;">Eğitmen Sayısı</div>
+                        <div class="h2 mb-0 fw-bold">@ViewBag.TrainerCount</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card dashboard-card bg-gradient-info h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs fw-bold text-uppercase mb-1" style="opacity:0.8;">Hizmet Çeşidi</div>
+                        <div class="h2 mb-0 fw-bold">@ViewBag.ServiceCount</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-list"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card dashboard-card bg-gradient-warning h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs fw-bold text-uppercase mb-1" style="opacity:0.8;">Onay Bekleyen</div>
+                        <div class="h2 mb-0 fw-bold">@ViewBag.PendingAppointments</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-white">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-history me-2"></i>Son Gelen Randevu Talepleri
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Üye Adı</th>
+                                <th>Antrenör</th>
+                                <th>Tarih</th>
+                                <th>Saat</th>
+                                <th>Durum</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="fw-bold">@item.AppUser?.FirstName @item.AppUser?.LastName</td>
+                                    <td>
+                                        <span class="badge bg-secondary">@item.Trainer?.FullName</span>
+                                    </td>
+                                    <td>@item.AppointmentDate.ToString("dd.MM.yyyy")</td>
+                                    <td>@item.StartTime.ToString(@"hh\:mm")</td>
+                                    <td>
+                                        @if (item.Status == GymProje.Entity.Entities.AppointmentStatus.Pending)
+                                        {
+                                            <span class="badge bg-warning text-dark">Bekliyor</span>
+                                        }
+                                        else if (item.Status == GymProje.Entity.Entities.AppointmentStatus.Confirmed)
+                                        {
+                                            <span class="badge bg-success">Onaylı</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">İptal</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+
+                            @if (!Model.Any())
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                        Henüz randevu talebi yok.
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

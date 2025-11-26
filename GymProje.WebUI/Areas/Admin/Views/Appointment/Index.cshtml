@@ -1,0 +1,87 @@
+﻿@model IEnumerable<GymProje.Entity.Entities.Appointment>
+
+@{
+    ViewData["Title"] = "Randevu Yönetimi";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Randevu Talepleri</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Tarih / Saat</th>
+                        <th>Üye</th>
+                        <th>Antrenör</th>
+                        <th>Hizmet</th>
+                        <th>Durum</th>
+                        <th style="width: 200px;">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-bold">@item.AppointmentDate.ToString("dd.MM.yyyy")</div>
+                                <small class="text-muted">@item.StartTime.ToString(@"hh\:mm") - @item.EndTime.ToString(@"hh\:mm")</small>
+                            </td>
+                            <td>@item.AppUser?.FirstName @item.AppUser?.LastName</td>
+                            <td>@item.Trainer?.FullName</td>
+                            <td>
+                                <span class="badge bg-info text-dark">@item.GymService?.Service?.Name</span>
+                            </td>
+                            <td>
+                                @if (item.Status == GymProje.Entity.Entities.AppointmentStatus.Pending)
+                                {
+                                    <span class="badge bg-warning text-dark"><i class="fas fa-clock me-1"></i>Bekliyor</span>
+                                }
+                                else if (item.Status == GymProje.Entity.Entities.AppointmentStatus.Confirmed)
+                                {
+                                    <span class="badge bg-success"><i class="fas fa-check me-1"></i>Onaylı</span>
+                                }
+                                else if (item.Status == GymProje.Entity.Entities.AppointmentStatus.Cancelled)
+                                {
+                                    <span class="badge bg-danger"><i class="fas fa-times me-1"></i>İptal</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Tamamlandı</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.Status == GymProje.Entity.Entities.AppointmentStatus.Pending)
+                                {
+                                    <a asp-action="Approve" asp-route-id="@item.Id" class="btn btn-success btn-sm" title="Onayla">
+                                        <i class="fas fa-check"></i>
+                                    </a>
+                                    <a asp-action="Cancel" asp-route-id="@item.Id" class="btn btn-warning btn-sm text-white" title="Reddet"
+                                       onclick="return confirm('Bu randevuyu reddetmek istediğinize emin misiniz?');">
+                                        <i class="fas fa-ban"></i>
+                                    </a>
+                                }
+
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" title="Sil"
+                                   onclick="return confirm('Kaydı tamamen silmek istiyor musunuz?');">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Any())
+            {
+                <div class="text-center py-4 text-muted">
+                    <i class="fas fa-calendar-times fa-3x mb-3"></i><br>
+                    Hiç randevu kaydı bulunamadı.
+                </div>
+            }
+        </div>
+    </div>
+</div>

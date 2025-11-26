@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Gym Admin Paneli</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Admin Paneli İçin Basit Stil Ayarları */
+        body { min-height: 100vh; display: flex; flex-direction: column; }
+        .wrapper { display: flex; width: 100%; flex: 1; }
+        #sidebar { min-width: 250px; max-width: 250px; background: #343a40; color: #fff; transition: all 0.3s; }
+        #sidebar .sidebar-header { padding: 20px; background: #212529; }
+        #sidebar ul.components { padding: 20px 0; }
+        #sidebar ul li a { padding: 10px 20px; font-size: 1.1em; display: block; color: #adb5bd; text-decoration: none; }
+        #sidebar ul li a:hover { color: #fff; background: #495057; }
+        #sidebar ul li.active > a { color: #fff; background: #0d6efd; }
+        #content { width: 100%; padding: 20px; background-color: #f8f9fa; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1 ps-3">💪 GYM PROJE - YÖNETİM PANELİ</span>
+            <div class="d-flex">
+                <a href="/Account/Logout" class="btn btn-outline-danger btn-sm">
+                    <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="wrapper">
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Menü</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="/Admin/Dashboard">
+                        <i class="fas fa-tachometer-alt me-2"></i> Ana Sayfa
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Gym">
+                        <i class="fas fa-building me-2"></i> Salonlar
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Trainer">
+                        <i class="fas fa-dumbbell me-2"></i> Antrenörler
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Service">
+                        <i class="fas fa-list me-2"></i> Hizmetler
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Appointment">
+                        <i class="fas fa-calendar-check me-2"></i> Randevular
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/GymService">
+                        <i class="fas fa-tags me-2"></i> Fiyatlandırma
+                    </a>
+                </li>
+                <hr class="text-white" />
+                <li>
+                    <a href="/">
+                        <i class="fas fa-globe me-2"></i> Siteye Git
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div id="content">
+            <div class="container-fluid">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success">@TempData["Success"]</div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["Error"]</div>
+                }
+
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
