@@ -17,7 +17,7 @@ namespace GymProje.Entity.Entities
         public string LastName { get; set; } = null!; // Zorunlu
 
         public DateTime? BirthDate { get; set; } // Yaş hesaplaması için gerekli (AI önerisi için)
-
+        //commit
         public string? Gender { get; set; } // Cinsiyet (AI önerisi için)
     }
 }
