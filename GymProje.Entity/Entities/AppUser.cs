@@ -18,6 +18,7 @@ namespace GymProje.Entity.Entities
 
         public DateTime? BirthDate { get; set; } // Yaş hesaplaması için gerekli (AI önerisi için)
         //commit
+        //commit
         public string? Gender { get; set; } // Cinsiyet (AI önerisi için)
     }
 }
