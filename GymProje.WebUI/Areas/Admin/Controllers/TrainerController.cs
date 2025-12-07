@@ -88,5 +88,62 @@ namespace GymProje.WebUI.Areas.Admin.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        // --- MEVCUT SİLME KODUNUN ÜSTÜNE EKLE ---
+
+        // 5. DÜZENLEME SAYFASI (GET) - Veriyi getirip forma doldurur
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var trainer = await _context.Trainers.FindAsync(id);
+            if (trainer == null) return NotFound();
+
+            // Salon listesini tekrar dolduruyoruz ki seçebilsin
+            // 3. parametre (trainer.GymId) sayesinde mevcut salon SEÇİLİ gelir.
+            ViewBag.Gyms = new SelectList(_context.Gyms, "Id", "Name", trainer.GymId);
+
+            return View(trainer);
+        }
+
+        // 6. DÜZENLEME İŞLEMİ (POST) - Veriyi günceller
+        [HttpPost]
+        public async Task<IActionResult> Edit(Trainer trainer, IFormFile? file)
+        {
+            // Veritabanındaki eski halini çekiyoruz (Resim kontrolü için şart)
+            var existingTrainer = await _context.Trainers.AsNoTracking().FirstOrDefaultAsync(x => x.Id == trainer.Id);
+
+            if (existingTrainer == null) return NotFound();
+
+            // A. Resim İşlemleri
+            if (file != null) // Eğer yeni resim seçildiyse
+            {
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string path = Path.Combine(wwwRootPath, @"img\trainers", fileName);
+
+                // Yeni resmi kaydet
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                // Eski resmi silebilirsin (Opsiyonel)
+                // System.IO.File.Delete(...) 
+
+                trainer.ImageUrl = fileName; // Yeni ismi ata
+            }
+            else
+            {
+                // Yeni resim yoksa ESKİSİNİ KORU
+                trainer.ImageUrl = existingTrainer.ImageUrl;
+            }
+
+            // B. Güncelleme
+            _context.Trainers.Update(trainer);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Antrenör bilgileri güncellendi.";
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

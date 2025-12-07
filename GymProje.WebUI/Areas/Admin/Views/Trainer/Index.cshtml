@@ -43,10 +43,12 @@
                             <span class="badge bg-info text-dark">@item.Gym?.Name</span>
                         </td>
                         <td>
-                            <a asp-action="Delete" asp-route-id="@item.Id"
-                               class="btn btn-danger btn-sm"
-                               onclick="return confirm('Bu antrenörü silmek istediğinize emin misiniz?');">
-                                <i class="fas fa-trash"></i> Sil
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm text-dark me-2" title="Düzenle">
+                                <i class="fas fa-edit"></i>
+                            </a>
+
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" onclick="...">
+                                <i class="fas fa-trash"></i>
                             </a>
                         </td>
                     </tr>

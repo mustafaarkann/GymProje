@@ -1,7 +1,7 @@
 ﻿@model GymProje.Entity.Entities.Gym
 
 @{
-    ViewData["Title"] = "Yeni Salon Ekle";
+    ViewData["Title"] = "Salon Düzenle";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -9,20 +9,23 @@
     <div class="col-md-8">
         <div class="card shadow-lg border-0 rounded-3 mt-4">
 
-            <div class="card-header bg-primary text-white py-3">
+            <div class="card-header bg-warning text-dark py-3">
                 <h5 class="mb-0 fw-bold">
-                    <i class="fas fa-plus-circle me-2"></i>Yeni Spor Salonu Tanımla
+                    <i class="fas fa-edit me-2"></i>Spor Salonu Bilgilerini Düzenle
                 </h5>
             </div>
 
             <div class="card-body p-4">
-                <form asp-action="Create" method="post">
+                <form asp-action="Edit" method="post">
+
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="CreatedDate" />
 
                     <div class="mb-4">
                         <label class="form-label fw-bold text-secondary">
                             <i class="fas fa-building me-2"></i>Salon Adı
                         </label>
-                        <input asp-for="Name" class="form-control form-control-lg" placeholder="Örn: Serdivan Merkez Şube" />
+                        <input asp-for="Name" class="form-control form-control-lg" />
                         <span asp-validation-for="Name" class="text-danger small"></span>
                     </div>
 
@@ -30,7 +33,7 @@
                         <label class="form-label fw-bold text-secondary">
                             <i class="fas fa-map-marker-alt me-2"></i>Adres
                         </label>
-                        <textarea asp-for="Address" class="form-control" rows="3" placeholder="Açık adres bilgisi giriniz..."></textarea>
+                        <textarea asp-for="Address" class="form-control" rows="3"></textarea>
                         <span asp-validation-for="Address" class="text-danger small"></span>
                     </div>
 
@@ -57,8 +60,8 @@
                         <a asp-action="Index" class="btn btn-secondary px-4">
                             <i class="fas fa-arrow-left me-1"></i> İptal
                         </a>
-                        <button type="submit" class="btn btn-success px-4 fw-bold">
-                            <i class="fas fa-save me-1"></i> Kaydet
+                        <button type="submit" class="btn btn-warning px-4 fw-bold">
+                            <i class="fas fa-save me-1"></i> Değişiklikleri Kaydet
                         </button>
                     </div>
                 </form>

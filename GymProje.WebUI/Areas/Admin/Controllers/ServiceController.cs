@@ -57,5 +57,28 @@ namespace GymProje.WebUI.Areas.Admin.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        // 5. DÜZENLEME SAYFASI (GET)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var service = await _context.Services.FindAsync(id);
+            if (service == null) return NotFound();
+            return View(service);
+        }
+
+        // 6. DÜZENLEME İŞLEMİ (POST)
+        [HttpPost]
+        public async Task<IActionResult> Edit(Service service)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Services.Update(service);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "Hizmet bilgileri güncellendi.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(service);
+        }
     }
 }

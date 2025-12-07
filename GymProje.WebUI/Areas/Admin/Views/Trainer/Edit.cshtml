@@ -1,0 +1,57 @@
+﻿@model GymProje.Entity.Entities.Trainer
+
+@{
+    ViewData["Title"] = "Antrenör Düzenle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-edit"></i> Antrenör Düzenle</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="CreatedDate" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Ad Soyad</label>
+                            <input asp-for="FullName" class="form-control" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Uzmanlık Alanı</label>
+                            <input asp-for="Specialty" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Çalıştığı Salon</label>
+                        <select asp-for="GymId" class="form-select" asp-items="ViewBag.Gyms"></select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Profil Fotoğrafı</label>
+                        <div class="mb-2">
+                            <img src="/img/trainers/@Model.ImageUrl" width="100" class="rounded border" />
+                            <small class="text-muted d-block">Mevcut Resim</small>
+                        </div>
+
+                        <input type="file" name="file" class="form-control" accept="image/*" />
+                        <div class="form-text">Değiştirmek istemiyorsanız boş bırakın.</div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-save"></i> Değişiklikleri Kaydet
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
